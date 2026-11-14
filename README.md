@@ -12,7 +12,7 @@
 
 For the features I tested, mostly yes. Rayls matched Ethereum on 33 of 40 comparable probes: Shanghai/Cancun opcodes, the standard precompiles, the Prague BLS12-381 precompiles, contract-size limits and byte-identical standard deployer contracts. It differs on the CLZ opcode, the Ethereum system contracts and Permit2. I did not deploy a contract, so I can’t confirm “without changes” end to end. Treat this as a checklist of what to verify first.
 
-Rayls says its Public Chain is EVM compatible. I tested that with a read-only harness: 47 probes through eth_call, eth_estimateGas and eth_getCode on the public Rayls mainnet RPC, run side by side against an Ethereum RPC as a reference, plus block scans, a block re check and a gas token check.
+Rayls says its Public Chain is EVM-compatible. I tested that with a read-only harness: 47 probes through eth_call, eth_estimateGas and eth_getCode on the public Rayls mainnet RPC, run side by side against an Ethereum RPC as a reference, plus block scans, a block re-check and a gas-token check.
 
 **What matched Ethereum (observed):**
 - Opcodes from the Shanghai and Cancun upgrades (`PUSH0`, `TSTORE`/`TLOAD`, `MCOPY`, `BLOBHASH`), the precompiles at 0x01 to 0x0a (identical results, or rejected on both for short-input probes), the seven Prague BLS12-381 precompiles (short input rejected on both), the 24,576-byte contract size limit, the 49,152-byte initcode limit, two gas estimates, and byte-identical code at four standard deployment-helper addresses (Multicall3, the CREATE2 deployer, the Safe singleton factory, CreateX).
