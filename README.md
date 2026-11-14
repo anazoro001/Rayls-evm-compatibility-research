@@ -1,7 +1,9 @@
 # Can I deploy my Ethereum smart contract on Rayls without changes? An EVM-compatibility test
 
 **Author:** Anzoro
+
 **Captures:** 11 Nov 2026 and 14 Nov 2026 
+
 **Everything here is read-only.** I did not deploy a contract or send a transaction.
 
 ---
