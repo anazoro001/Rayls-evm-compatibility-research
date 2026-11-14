@@ -30,9 +30,9 @@ Rayls says its Public Chain is EVM-compatible. I tested that with a read-only ha
 
 | Claim (paraphrased) | Source | Accessed |
 |---|---|---|
-| Full compatibility with Ethereum (EVM) | Rayls Public Chain launch press release, 1 May 2026 | [11 Nov 2026 ]|
-| Gas is paid in a stablecoin | Same press release |[ 11 Nov 2026] |
-| Ethereum-compatible EVM built on reth and alloy, serving standard Ethereum JSON-RPC | Axyl repository README | [11 Nov 2026] |
+| Full compatibility with Ethereum (EVM) | Rayls Public Chain launch press release, 1 May 2026 | 11 Nov 2026 |
+| Gas is paid in a stablecoin | Same press release | 11 Nov 2026 |
+| Ethereum-compatible EVM built on reth and alloy, serving standard Ethereum JSON-RPC | Axyl repository README | 11 Nov 2026 |
 
 ---
 
@@ -254,7 +254,7 @@ $f = (Get-ChildItem data\blocks_rayls_*.json | Sort-Object Name | Select-Object 
 python scripts\recheck_blocks.py $f $env:RPC rayls_recheck
 ```
 
-Live values (block numbers, timestamps, balances, supply) will differ on a rerun, and the Ethereum reference will have moved on. My raw captures are in `data/`, so the analysis can be checked without the live chain. Python version used: [[FILL-1: output of `python --version`]].
+Live values (block numbers, timestamps, balances, supply) will differ on a rerun, and the Ethereum reference will have moved on. My raw captures are in `data/`, so the analysis can be checked without the live chain. Python version used: 3.10.2.
 
 ## 11. Data files
 
