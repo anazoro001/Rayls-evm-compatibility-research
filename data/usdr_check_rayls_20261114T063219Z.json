@@ -1,0 +1,26 @@
+{
+  "label": "rayls",
+  "captured_utc": "2026-11-14T06:32:15.697631+00:00",
+  "address": "0x339d413ccefd986b1b3647a9cfa9cbbe70a30749",
+  "tx_hash": "0x338d10c8f6ea1c62d54ea01c3ddba5d440269b4b196641c3e9add1849be2892f",
+  "tx_block": 14461060,
+  "usdr_token": "0x0000000000000000000000000000000000000400",
+  "native_balance_hex": "0x121f2d81c72e11520",
+  "token_balanceOf_hex": "0x00000000000000000000000000000000000000000000000121f2d81c72e11520",
+  "token_code_length_bytes": 1,
+  "native_equals_token_balance": true,
+  "token_metadata": {
+    "name": "USD Rayls",
+    "symbol": "USDr",
+    "decimals": 18,
+    "totalSupply": 25342245494933504401529
+  },
+  "receipt": {
+    "status": "0x1",
+    "type": "0x0",
+    "gasUsed": 43128,
+    "effectiveGasPrice": 69120000000,
+    "fee_smallest_units": 2981007360000000,
+    "tx_value_hex": "0x0"
+  }
+}

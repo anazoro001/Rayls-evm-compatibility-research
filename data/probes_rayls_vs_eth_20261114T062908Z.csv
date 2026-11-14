@@ -1,0 +1,48 @@
+probe,method,rayls_result,rayls_error,rayls_known_answer,eth_result,eth_error,eth_known_answer,compare
+push0 (Shanghai),eth_call,0x0000000000000000000000000000000000000000000000000000000000000000,,OK,0x0000000000000000000000000000000000000000000000000000000000000000,,OK,same
+blobhash(0) (Cancun),eth_call,0x0000000000000000000000000000000000000000000000000000000000000000,,OK,0x0000000000000000000000000000000000000000000000000000000000000000,,OK,same
+tstore/tload (Cancun),eth_call,0x000000000000000000000000000000000000000000000000000000000000002a,,OK,0x000000000000000000000000000000000000000000000000000000000000002a,,OK,same
+mcopy (Cancun),eth_call,0x000000000000000000000000000000000000000000000000000000000000002a,,OK,0x000000000000000000000000000000000000000000000000000000000000002a,,OK,same
+chainid,eth_call,0x0000000000000000000000000000000000000000000000000000000000011cfd,,,0x0000000000000000000000000000000000000000000000000000000000000001,,,n/a (env-specific)
+basefee,eth_call,0x0000000000000000000000000000000000000000000000000000000000000000,,,0x0000000000000000000000000000000000000000000000000000000000000000,,,n/a (env-specific)
+prevrandao,eth_call,0xcf2416b733d4b8849028cb99ad4affcff0c58e701a7059dc0965e72a679cfed6,,,0x47142116528bd0b1690d1d4956f2e476cdb0e65e92d98578fc70930697e7c084,,,n/a (env-specific)
+gaslimit,eth_call,0x000000000000000000000000000000000000000000000000000000001dcd6500,,,0x0000000000000000000000000000000000000000000000000000000003938700,,,n/a (env-specific)
+timestamp,eth_call,0x000000000000000000000000000000000000000000000000000000006af7ffbc,,,0x000000000000000000000000000000000000000000000000000000006af7ffb7,,,n/a (env-specific)
+number,eth_call,0x0000000000000000000000000000000000000000000000000000000000dca82b,,,0x00000000000000000000000000000000000000000000000000000000019301a8,,,n/a (env-specific)
+blobbasefee,eth_call,0x0000000000000000000000000000000000000000000000000000000000000001,,,0x000000000000000000000000000000000000000000000000000000000038f057,,,n/a (env-specific)
+code size 24576 bytes (at limit),eth_call,0x00000000000000000000000000000000000000000000000000000000000000000000...(len=49154),,,0x00000000000000000000000000000000000000000000000000000000000000000000...(len=49154),,,same
+code size 24577 bytes (over limit),eth_call,,EVM error: CreateContractSizeLimit,,,EVM error: CreateContractSizeLimit,,both_error
+invalid opcode 0xfe (negative control),eth_call,,EVM error: InvalidFEOpcode,OK,,EVM error: InvalidFEOpcode,OK,both_error
+"0x01 ecrecover, empty input",eth_call,0x,,,0x,,,same
+0x02 sha256(''),eth_call,0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,,OK,0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,,OK,same
+0x03 ripemd160(''),eth_call,0x0000000000000000000000009c1185a5c5e9fc54612808977ee8f548b2258d31,,OK,0x0000000000000000000000009c1185a5c5e9fc54612808977ee8f548b2258d31,,OK,same
+0x04 identity(0x1234),eth_call,0x1234,,OK,0x1234,,OK,same
+0x05 modexp 2^3 mod 5,eth_call,0x03,,OK,0x03,,OK,same
+"0x06 bn256Add(0,0)",eth_call,0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,,OK,0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,,OK,same
+"0x07 bn256Mul(0,0)",eth_call,0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,,OK,0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,,OK,same
+0x08 bn256Pairing(empty),eth_call,0x0000000000000000000000000000000000000000000000000000000000000001,,OK,0x0000000000000000000000000000000000000000000000000000000000000001,,OK,same
+"0x09 blake2f, short input (must error)",eth_call,,EVM error: PrecompileError,OK,,invalid input length,OK,both_error
+"0x0a point evaluation, short input (Cancun precompile; must error)",eth_call,,EVM error: PrecompileError,OK,,EVM error: PrecompileError,OK,both_error
+"estimateGas: SSTORE(0,1) in create",eth_estimateGas,0x1291d,,,0x1291d,,,same
+estimateGas: bare STOP create,eth_estimateGas,0xd227,,,0xd227,,,same
+"initcode 49152 bytes (EIP-3860 limit, at limit)",eth_call,0x,,,0x,,,same
+"initcode 49153 bytes (EIP-3860 limit, over limit)",eth_call,,max initcode size exceeded,,,max initcode size exceeded,,both_error
+CLZ opcode 0x1e (Osaka): CLZ(1),eth_call,,EVM error: NotActivated,,0x00000000000000000000000000000000000000000000000000000000000000ff,,,DIFF_error_vs_result
+"0x0b BLS12-381 G1ADD, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x0c BLS12-381 G1MSM, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x0d BLS12-381 G2ADD, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x0e BLS12-381 G2MSM, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x0f BLS12-381 PAIRING, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x10 BLS12-381 MAP_FP_TO_G1, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x11 BLS12-381 MAP_FP2_TO_G2, short input (Prague)",eth_call,,EVM error: PrecompileError,,,EVM error: PrecompileError,,both_error
+"0x100 P256VERIFY, short input (Osaka)",eth_call,0x,,,0x,,,same
+code @ EIP-4788 beacon roots contract (Cancun),eth_getCode,0x,,,0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f...(len=196),,,DIFF_result
+code @ EIP-2935 history storage (Prague),eth_getCode,0x,,,0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f...(len=168),,,DIFF_result
+code @ EIP-7002 withdrawal requests (Prague),eth_getCode,0x,,,0x3373fffffffffffffffffffffffffffffffffffffffe1460cb5760115f54807fffff...(len=1010),,,DIFF_result
+code @ EIP-7251 consolidation requests (Prague),eth_getCode,0x,,,0x3373fffffffffffffffffffffffffffffffffffffffe1460d35760115f54807fffff...(len=830),,,DIFF_result
+code @ Multicall3,eth_getCode,0x6080604052600436106100f35760003560e01c80634d2301cc1161008a578063a8b0...(len=7618),,,0x6080604052600436106100f35760003560e01c80634d2301cc1161008a578063a8b0...(len=7618),,,same
+code @ deterministic deployment proxy (Arachnid),eth_getCode,0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3,,,0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3,,,same
+code @ Safe singleton factory,eth_getCode,0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3,,,0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3,,,same
+code @ Permit2,eth_getCode,0x,,,0x6040608081526004908136101561001557600080fd5b600090813560e01c80630d58...(len=18306),,,DIFF_result
+code @ CreateX,eth_getCode,0x60806040526004361061018a5760003560e01c806381503da1116100d6578063d323...(len=23678),,,0x60806040526004361061018a5760003560e01c806381503da1116100d6578063d323...(len=23678),,,same
+code @ 0x...0400 (USDr token address per Rayls explorer),eth_getCode,0x00,,,0x,,,DIFF_result
