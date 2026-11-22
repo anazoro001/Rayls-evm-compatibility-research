@@ -21,7 +21,7 @@ Rayls says its Public Chain is EVM-compatible. I tested that with a read-only ha
 
 **What differed (observed):**
 - The `CLZ` opcode (0x1e) was rejected on Rayls with `EVM error: NotActivated` while the Ethereum reference executed it.
-- No code at the Ethereum system-contract addresses for EIP-4788, EIP-2935, EIP-7002 and EIP-7251, and none at the canonical Permit2 address.
+- The Ethereum system-contract addresses for EIP-4788, EIP-2935, EIP-7002 and EIP-7251 returned empty bytecode through eth_getCode. The canonical Permit2 address also returned empty bytecode. These are address-level observations, not proof that the corresponding protocol functionality is absent.
 - The USDr gas token address holds a single zero byte of code, yet token calls return values there. Native balance equals token balance for the address I sampled.
 
 **Reading (interpretation):** the block header fields, the opcodes, the precompiles and the missing `CLZ` opcode together look like Ethereum's Prague-level rules without the later `CLZ` opcode. Section 7 and section 8 explain this and its limits.
@@ -54,6 +54,10 @@ Rayls says its Public Chain is EVM-compatible. I tested that with a read-only ha
 3. **Recorded-only probes** (7): values that legitimately differ per chain (chain ID, block number, and so on).
 
 **Controls.** An invalid opcode (`0xfe`) must fail everywhere (negative control). During development, the hand-assembled probe bytecode and expected answers were checked in an independent Python EVM (py-evm, Cancun rules); the `BLOBHASH` probe could not be run there, so it is corroborated only by the Ethereum comparison. An early version of the harness counted an unreachable endpoint as a match; this was fixed (a preflight check, and an `INCONCLUSIVE_transport` label that never counts as a match).
+
+**Block-state consistency and reproducibility.**
+
+The recorded captures contain observations from specific execution times. Unless a request explicitly records and uses a fixed block identifier, its result should not be interpreted as block-pinned. The current comparison is therefore a point-in-time RPC observation rather than a fully block-pinned differential test. A future capture should record the block number and block hash and use a fixed block reference for state-dependent methods wherever supported.
 
 **Captures.**
 
@@ -210,8 +214,9 @@ Notes:
 These are my readings of the observations above, not verified facts.
 
 - **Likely to work as on Ethereum:** contracts that use opcodes and precompiles up to the tested Cancun/Prague level, standard contract and initcode size limits, and BLS12-381 precompiles. Standard deployment helpers (Multicall3, the CREATE2 deployer, the Safe singleton factory, CreateX) are present at their usual addresses with identical bytecode, so tooling that relies on them can probably find them.
-- **Check before relying on:** contracts or libraries that use the `CLZ` opcode, that call the EIP-4788 or EIP-2935 system contracts, or that expect Permit2 at its canonical address. On Rayls (at capture) these were rejected or had no code at that address.
-- **Gas token:** USDr is both the gas currency and an ERC-20-style token at a system address. Because that address holds one byte of code but answers `name`, `symbol`, `decimals`, `totalSupply` and `balanceOf` calls, the node must be handling those calls natively rather than running contract bytecode. This is an inference. Tooling that treats `eth_getCode != 0x` as "a normal contract" or tries to verify source at that address will see a stub.
+- **Check before relying on:** contracts or libraries that use the `CLZ` opcode or expect Permit2 at its canonical address. The `CLZ` probe was rejected on Rayls, while Permit2 had no code at its canonical address during the capture.
+- **System-contract addresses:** The canonical Ethereum addresses for EIP-4788, EIP-2935, EIP-7002 and EIP-7251 returned empty bytecode through `eth_getCode`. This establishes an address-level difference, but does not independently establish whether equivalent protocol-level functionality exists internally on Rayls. Compatibility for these features remains unresolved pending direct behavioral tests.
+- **Gas token:** USDr is identified by the Rayls explorer as the gas currency and ERC-20-style token at a system address. During the capture, that address returned one byte of code (`0x00`), while calls to `name`, `symbol`, `decimals`, `totalSupply` and `balanceOf` returned values. This suggests special handling by the node or protocol, but the exact implementation mechanism was not established. The native-balance and token-balance equality was observed for only one sampled address.
 - **Timing:** blocks about every 1.34 s with whole-second timestamps; contracts that assume the timestamp increases every block may see equal timestamps occasionally.
 - **Scale numbers:** the block gas limit (500,000,000 at capture) is about 8 times the reference chain's at the time, which is relevant for tools that assume Ethereum's limit.
 
