@@ -22,7 +22,7 @@ Rayls says its Public Chain is EVM-compatible. I tested that with a read-only ha
 **What differed (observed):**
 - The `CLZ` opcode (0x1e) was rejected on Rayls with `EVM error: NotActivated` while the Ethereum reference executed it.
 - The Ethereum system-contract addresses for EIP-4788, EIP-2935, EIP-7002 and EIP-7251 returned empty bytecode through eth_getCode. The canonical Permit2 address also returned empty bytecode. These are address-level observations, not proof that the corresponding protocol functionality is absent.
-- The USDr gas token address holds a single zero byte of code, yet token calls return values there. Native balance equals token balance for the address I sampled.
+- The USDr gas token address (`0x0400`) returned one byte of code (`0x00`), while token calls returned values. The native balance and USDr token balance were equal for the one address sampled. These observations suggest special handling by the Rayls node or protocol, but do not establish the exact gas-payment mechanism.
 
 **Reading (interpretation):** the block header fields, the opcodes, the precompiles and the missing `CLZ` opcode together look like Ethereum's Prague-level rules without the later `CLZ` opcode. Section 7 and section 8 explain this and its limits.
 
@@ -99,7 +99,7 @@ Of the 19 comparable probes in this set, 15 returned identical outcomes and 4 we
 | 0x100 `P256VERIFY`, short input | same result | same result | **inconclusive** (see note) |
 
 Notes:
-- For the BLS probes, a chain without the precompile would normally return an empty success for a call to an empty address, so "rejected on both" suggests the precompiles exist on both. This is my reading of the behaviour.
+- For the BLS12-381 probes, both chains rejected the short-input calls. This behaviour suggests that both endpoints recognise or handle these precompile addresses, but it does not establish that valid inputs are processed correctly. Full BLS12-381 functionality remains unverified.
 - `P256VERIFY` is inconclusive: invalid input returns empty on a chain that has the precompile and also on a chain that lacks it, so this probe cannot tell them apart. I make no claim from it.
 - `CLZ` is the one opcode in this set where Rayls and the Ethereum reference disagree. The full raw outputs are in `data/probes_rayls_vs_eth_20261114T062908Z.json`.
 
