@@ -186,7 +186,7 @@ def main():
         json.dump(raw, f, indent=2)
 
     comparable = [r for r in rows if not r["compare"].startswith("n/a")]
-    good = [r for r in comparable if r["compare"] in ("same", "both_error")]
+    good = [r for r in comparable if r["compare"] == "same"]
     print(f"\nMatching on {len(good)} of {len(comparable)} comparable probes "
           f"({len(rows) - len(comparable)} env-specific, recorded only)")
     print("saved", csv_path, "and the .json with full raw outputs")
