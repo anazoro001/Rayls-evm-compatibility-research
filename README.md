@@ -8,16 +8,15 @@
 
 ---
 
-## 1. Short answer
 
-For the features I tested, Rayls showed identical outcomes to Ethereum on 20 of 40 comparable probes. Another 13 probes returned errors on both endpoints, while 7 produced different outcomes. The identical outcomes included tested Shanghai/Cancun opcodes, standard precompiles, contract-size limits and byte-identical standard deployer contracts. These results indicate compatibility across some tested features, not complete EVM compatibility. It differs on the CLZ opcode, the Ethereum system-contract addresses and Permit2. I did not deploy a contract, so I can’t confirm “without changes” end to end. Treat this as a checklist of what to verify first.
+Rayls showed identical outcomes to Ethereum on 21 of 40 comparable probes. Another 12 probes returned errors on both endpoints, while 7 produced different outcomes. The identical outcomes included tested Shanghai/Cancun opcodes, standard precompiles, contract-size limits and byte-identical standard deployer contracts. These results indicate compatibility across some tested features, not complete EVM compatibility. It differs on the CLZ opcode, the Ethereum system-contract addresses and Permit2. I did not deploy a contract, so I can’t confirm “without changes” end to end. Treat this as a checklist of what to verify first.
 
 Rayls says its Public Chain is EVM-compatible. I tested that with a read-only harness: 47 probes through eth_call, eth_estimateGas and eth_getCode on the public Rayls mainnet RPC, run side by side against an Ethereum RPC as a reference, plus block scans, a block re-check and a gas-token check.
 
 **What matched Ethereum (observed):**
-- Opcodes from the Shanghai and Cancun upgrades (`PUSH0`, `TSTORE`/`TLOAD`, `MCOPY`, `BLOBHASH`), the precompiles at 0x01 to 0x0a (identical results, or rejected on both for short-input probes), The seven Prague BLS12-381 precompiles returned similar rejection responses to short-input probes on both chains; full functionality was not established., the 24,576-byte contract size limit, the 49,152-byte initcode limit, two gas estimates, and byte-identical code at four standard deployment-helper addresses (Multicall3, the CREATE2 deployer, the Safe singleton factory, CreateX).
+- Opcodes from the Shanghai and Cancun upgrades (`PUSH0`, `TSTORE`/`TLOAD`, `MCOPY`, `BLOBHASH`); precompiles at 0x01 to 0x0a (identical results or rejection on both chains for short-input probes); the seven Prague BLS12-381 precompiles (similar rejection responses to short-input probes, with full functionality unverified); the 24,576-byte contract size limit; the 49,152-byte initcode limit; two gas estimates; and byte-identical code at four standard deployment-helper addresses (Multicall3, the CREATE2 deployer, the Safe singleton factory, CreateX).
 - All 14 probes that have known Ethereum answers returned the expected result on Rayls.
-- Of 40 comparable probes, 20 produced identical outcomes. Another 13 returned errors on both chains, while 7 produced different outcomes. Both-error cases are reported separately and are not counted as successful compatibility matches.
+- Of 40 comparable probes, 21 produced identical outcomes. Another 12 returned errors on both chains, while 7 produced different outcomes. Both-error cases are reported separately and are not counted as successful compatibility matches.
 
 **What differed (observed):**
 - The `CLZ` opcode (0x1e) was rejected on Rayls with `EVM error: NotActivated` while the Ethereum reference executed it.
